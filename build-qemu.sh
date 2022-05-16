@@ -19,20 +19,6 @@ QEMU_SOURCE_URL="https://download.qemu.org/qemu-6.2.0.tar.xz"
 
 source build.sh
 
-# build_lib_gettext "${PREFIX}"
-# build_lib_libffi "${PREFIX}"
-# build_lib_pcre "${PREFIX}"
-# glib should always follow the above dependencies (order matters)
-# build_lib_glib "${PREFIX}"
-
-# build_lib_gmp "${PREFIX}"
-# build_lib_nettle "${PREFIX}"
-# build_ca-certificates
-# build_lib_unistring "${PREFIX}"
-# build_lib_libidn2 "${PREFIX}"
-# build_lib_zstd "${PREFIX}"
-# build_lib_gnutls "${PREFIX}"
-
 function build_qemu_deps() {
     build_lib_gettext "$1"
     build_lib_libffi "$1"
