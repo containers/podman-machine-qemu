@@ -47,7 +47,7 @@ function build_qemu() {
     pushd "${source_dir}"
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
         --enable-vde --disable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --prefix="${PREFIX}" \
-        --target-list=x86_64-softmmu
+        --target-list=aarch64-softmmu
     
     make V=1 install
     popd
