@@ -1,4 +1,4 @@
-## Relocatable build of qemu for macOS
+## Qemu build for macOS
 
 ### How to use the scripts
 - install some dependencies, these should already exist if brew is used
