@@ -15,7 +15,7 @@ export LDFLAGS=-L"${PREFIX}"/lib
 QEMU_SOURCE_URL="https://download.qemu.org/qemu-6.2.0.tar.xz"
 
 ## Install following build time dependencies from brew:
-## ronn, gengetopt, automake, autoconf, libtool, cmake, meson, ninja
+## automake, autoconf, libtool, cmake, meson, ninja, wget, pkg-config
 
 source build.sh
 
