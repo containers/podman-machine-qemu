@@ -127,7 +127,7 @@ function build_lib_glib() {
 #     readonly CACERT_PATH
 # }
 
-# # gmp is also directly used by qemu
+# gmp is also directly used by qemu
 function build_lib_gmp() {
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gmp.rb
     local source_dir
@@ -139,11 +139,6 @@ function build_lib_gmp() {
     make install
     popd || exit
 }
-
-# function build_guile() {
-#     source_dir=$(download_and_extract "${GUILE_URL}")
-
-# }
 
 function build_lib_unistring() {
     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/libunistring.rb
