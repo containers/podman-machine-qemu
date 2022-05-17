@@ -93,5 +93,5 @@ function build_qemu() {
 
 
 if build_qemu; then
-    tar -C "${PREFIX}" -cJf qemu-macos-"${CPU}" .
+    tar -C "${PREFIX}" -cJf qemu-macos-"${CPU}".tar.xz .
 fi
