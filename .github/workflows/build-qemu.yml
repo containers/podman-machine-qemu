@@ -1,0 +1,27 @@
+name: Build Qemu
+on:
+  push:
+    branches:
+      - "main"
+      - "old-main"
+  pull_request: {}
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macOS-12
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: install build dependencies for Qemu
+        run: brew install automake autoconf libtool cmake meson ninja wget pkg-config
+      - name: Build Qemu
+        run: PREFIX=/Applications/crc-qemu-test ./build-qemu.sh
+      - name: Upload qemu artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: qemu-test-build
+          path: "./qemu-macos-amd64.tar.xz"
