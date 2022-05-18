@@ -309,8 +309,17 @@ function build_lib_pixman() {
 
 function build_lib_snappy() {
     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/snappy.rb
-    local source_dir
-    source_dir=$(download_and_extract "${LIBSNAPPY_URL}")
+    # uses different name for the archive then the name of resource in the URL
+    local tarball source_dir
+    tarball=snappy-$(basename "${LIBSNAPPY_URL}")
+    if ! [ -f "${tarball}" ]; then
+        wget -q --content-disposition "${LIBSNAPPY_URL}"
+    fi
+    source_dir="$(tar -tf "${tarball}" | head -1 | tr -d '/')"
+    if ! [ -d "${source_dir}" ]; then
+        tar -xf "${tarball}"
+    fi
+
     pushd "${source_dir}"
     cmake . -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_BUILD_BENCHMARKS=OFF -DBUILD_SHARED_LIBS=ON \
         -DCMAKE_INSTALL_PREFIX="$1" -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release \
