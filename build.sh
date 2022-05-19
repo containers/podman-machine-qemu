@@ -323,7 +323,7 @@ function build_lib_snappy() {
     pushd "${source_dir}"
     cmake . -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_BUILD_BENCHMARKS=OFF -DBUILD_SHARED_LIBS=ON \
         -DCMAKE_INSTALL_PREFIX="$1" -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev -DBUILD_TESTING=OFF
+        -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev
     
     make install
     popd
