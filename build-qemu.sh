@@ -2,7 +2,7 @@
 
 set -exu
 
-PREFIX=${PREFIX:-/tmp/qemu-test-build}
+PREFIX=${PREFIX:-/Applications/podman/qemu}
 
 ! [ -d "${PREFIX}" ] && mkdir -p "${PREFIX}"
 
