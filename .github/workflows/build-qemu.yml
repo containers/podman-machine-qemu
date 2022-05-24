@@ -19,7 +19,7 @@ jobs:
       - name: install build dependencies for Qemu
         run: brew install automake autoconf libtool cmake meson ninja wget pkg-config
       - name: Build Qemu
-        run: PREFIX=/Applications/crc-qemu-test ./build-qemu.sh
+        run: ./build-qemu.sh
       - name: Upload qemu artifact
         uses: actions/upload-artifact@v2
         with:
