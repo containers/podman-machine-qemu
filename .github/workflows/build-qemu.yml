@@ -18,6 +18,8 @@ jobs:
         uses: actions/checkout@v2
       - name: install build dependencies for Qemu
         run: brew install automake autoconf libtool cmake meson ninja wget pkg-config
+      - name: mkdir prefix /opt/podman/qemu
+        run: sudo mkdir -p /opt/podman/qemu && sudo chown -R $USER:admin /opt/podman
       - name: Build Qemu
         run: ./build-qemu.sh
       - name: Upload qemu artifact
