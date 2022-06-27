@@ -5,7 +5,7 @@ set -exu
 LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.21.tar.gz"
 LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz"
 LIBPCRE_URL="https://www.mirrorservice.org/sites/ftp.exim.org/pub/pcre/pcre-8.45.tar.bz2"
-LIBGLIB_URL="https://download.gnome.org/sources/glib/2.72/glib-2.72.1.tar.xz"
+LIBGLIB_URL="https://download.gnome.org/sources/glib/2.72/glib-2.72.2.tar.xz"
 #CA_CERTIFICATE_URL="https://curl.se/ca/cacert-2022-04-26.pem"
 LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz"
 LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.7.3.tar.gz"
