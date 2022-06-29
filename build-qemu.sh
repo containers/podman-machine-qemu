@@ -46,17 +46,32 @@ function build_qemu() {
     export LIBTOOL=glibtool
     local source_dir
     source_dir=$(download_and_extract "${QEMU_SOURCE_URL}")
+ 
+    local qemu_target
+    case "$(uname -m)" in
+         "x86_64")
+             qemu_target="x86_64-softmmu"
+             ;;
+         "arm64")
+             qemu_target="aarch64-softmmu"
+             ;;
+         *)
+             echo "Unknown arch, exiting"
+             exit 1
+             ;;
+    esac
+
     pushd "${source_dir}"
 
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
         --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --prefix="${PREFIX}" \
-        --target-list=aarch64-softmmu,x86_64-softmmu
-    
+        --target-list="${qemu_target}"
+
     make V=1 install
-    popd
 }
 
-
 if build_qemu; then
+    popd
     tar -C "${PREFIX}" -cJf qemu-macos-"${CPU}".tar.xz .
 fi
+
