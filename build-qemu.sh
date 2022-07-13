@@ -64,7 +64,7 @@ function build_qemu() {
     pushd "${source_dir}"
 
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
-        --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --prefix="${PREFIX}" \
+        --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --prefix="${PREFIX}" \
         --target-list="${qemu_target}"
 
     make V=1 install
