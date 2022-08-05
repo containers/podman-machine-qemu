@@ -28,6 +28,8 @@ function build_qemu_deps() {
     build_lib_glib "$1"
 
     build_lib_gmp "$1"
+    build_lib_gpgerror "$1"
+    build_lib_gcrypt "$1"
     build_lib_nettle "$1"
     build_lib_libpng "$1"
     build_lib_jpeg "$1"
@@ -64,8 +66,8 @@ function build_qemu() {
     pushd "${source_dir}"
 
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
-        --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --prefix="${PREFIX}" \
-        --target-list="${qemu_target}"
+        --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
+        --prefix="${PREFIX}" --target-list="${qemu_target}"
 
     make V=1 install
 }
