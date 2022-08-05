@@ -22,6 +22,8 @@ LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.40.0.tar.gz"
 LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.9.tar.gz"
 LIBVDE2_URL="https://github.com/anjannath/mirror/releases/download/0.0.1/vde2-2.3.2.tar"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
+LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.45.tar.bz2"
+LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.bz2"
 
 function download_and_extract() {
     local tarball ext_dir
@@ -183,6 +185,30 @@ function build_lib_zstd() {
 # function build_lib_brotli() {
 
 # }
+
+function build_lib_gpgerror() {
+    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libgpg-error.rb
+    local source_dir
+    source_dir=$(download_and_extract "${LIBGPGERROR_URL}")
+    pushd "${source_dir}" || exit
+    ./configure --disable-dependency-tracking --disable-silent-rules --prefix="$1" --enable-static
+    make install
+    popd || exit
+}
+
+function build_lib_gcrypt() {
+    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libgcrypt.rb
+    local source_dir
+    source_dir=$(download_and_extract "${LIBGCRYPT_URL}")
+    pushd "${source_dir}" || exit
+    ./configure --disable-dependency-tracking --disable-silent-rules --enable-static --prefix="$1" \
+        --disable-asm --with-libgpg-error-prefix="$1"
+    make -C random rndjent.o rndjent.lo
+    make -j "${NCORES}"
+    make -j "${NCORES}" check
+    make install
+    popd || exit
+}
 
 # nettle is also directly used by qemu
 function build_lib_nettle() {
