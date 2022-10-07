@@ -64,7 +64,7 @@ function build_qemu() {
     esac
 
     pushd "${source_dir}"
-
+    export PATH=${PREFIX}/bin:${PATH}
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
         --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
         --prefix="${PREFIX}" --target-list="${qemu_target}"
