@@ -12,7 +12,7 @@ export PKG_CONFIG_PATH="${LIBRARY_PATH}"/pkgconfig
 export CPPFLAGS=-I"${PREFIX}"/include
 export LDFLAGS=-L"${PREFIX}"/lib
 
-QEMU_SOURCE_URL="https://download.qemu.org/qemu-7.0.0.tar.xz"
+QEMU_SOURCE_URL="https://download.qemu.org/qemu-7.1.0.tar.xz"
 
 
 ## Install following build time dependencies from brew:
