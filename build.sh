@@ -46,9 +46,11 @@ NCORES=$(sysctl -n hw.ncpu)
 case "$(uname -m)" in
     "x86_64")
         CPU="amd64"
+        macos_version_min_flags="-mmacosx-version-min=10.15"
         ;;
     "arm64")
         CPU="aarch64"
+        macos_version_min_flags="-mmacosx-version-min=11.0"
         ;;
     *)
         echo "Unknown arch, exiting"
@@ -58,6 +60,9 @@ esac
 
 KERNEL_VERSION=$(uname -r)
 KERNEL_BUILD_FLAG="${CPU}-apple-darwin${KERNEL_VERSION%%.*}" # aarch64-apple-darwin21
+
+export CFLAGS="${macos_version_min_flags}"
+export CPPFLAGS="${macos_version_min_flags}"
 
 # the following are depenedencies of glib
 function build_lib_gettext() {

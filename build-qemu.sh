@@ -50,12 +50,15 @@ function build_qemu() {
     source_dir=$(download_and_extract "${QEMU_SOURCE_URL}")
  
     local qemu_target
+    local macos_version_min_flags
     case "$(uname -m)" in
          "x86_64")
              qemu_target="x86_64-softmmu"
+             macos_version_min_flags="-mmacosx-version-min=10.15"
              ;;
          "arm64")
              qemu_target="aarch64-softmmu"
+             macos_version_min_flags="-mmacosx-version-min=11.0"
              ;;
          *)
              echo "Unknown arch, exiting"
@@ -65,6 +68,8 @@ function build_qemu() {
 
     pushd "${source_dir}"
     export PATH=${PREFIX}/bin:${PATH}
+    export CPPFLAGS="${CPPFLAGS} ${macos_version_min_flags}"
+    export CFLAGS="${macos_version_min_flags}"
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
         --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
         --prefix="${PREFIX}" --target-list="${qemu_target}"
