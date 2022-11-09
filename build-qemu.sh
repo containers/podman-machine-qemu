@@ -55,10 +55,12 @@ function build_qemu() {
          "x86_64")
              qemu_target="x86_64-softmmu"
              macos_version_min_flags="-mmacosx-version-min=10.15"
+             export MACOSX_DEPLOYMENT_TARGET=10.15
              ;;
          "arm64")
              qemu_target="aarch64-softmmu"
              macos_version_min_flags="-mmacosx-version-min=11.0"
+             export MACOSX_DEPLOYMENT_TARGET=11.0
              ;;
          *)
              echo "Unknown arch, exiting"
