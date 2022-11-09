@@ -47,10 +47,12 @@ case "$(uname -m)" in
     "x86_64")
         CPU="amd64"
         macos_version_min_flags="-mmacosx-version-min=10.15"
+        export MACOSX_DEPLOYMENT_TARGET=10.15
         ;;
     "arm64")
         CPU="aarch64"
         macos_version_min_flags="-mmacosx-version-min=11.0"
+        export MACOSX_DEPLOYMENT_TARGET=11.0
         ;;
     *)
         echo "Unknown arch, exiting"
