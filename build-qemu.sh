@@ -16,7 +16,7 @@ QEMU_SOURCE_URL="https://download.qemu.org/qemu-7.1.0.tar.xz"
 
 
 ## Install following build time dependencies from brew:
-## automake, autoconf, libtool, cmake, meson, ninja, wget, pkg-config
+## automake, autoconf, libtool, cmake, meson, ninja, curl, pkg-config
 
 source build.sh
 
