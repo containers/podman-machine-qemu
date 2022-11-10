@@ -30,7 +30,7 @@ function download_and_extract() {
     
     tarball=$(basename "$1")
     if ! [ -f "${tarball}" ]; then
-        wget -q --content-disposition "$1"
+        curl -LO "$1"
     fi
     
     ext_dir="$(tar -tf "${tarball}" | head -1 | tr -d '/')"
@@ -346,7 +346,7 @@ function build_lib_snappy() {
     local tarball source_dir
     tarball=snappy-$(basename "${LIBSNAPPY_URL}")
     if ! [ -f "${tarball}" ]; then
-        wget -q --content-disposition "${LIBSNAPPY_URL}"
+        curl -L "${LIBSNAPPY_URL}" -o ${tarball}
     fi
     source_dir="$(tar -tf "${tarball}" | head -1 | tr -d '/')"
     if ! [ -d "${source_dir}" ]; then
