@@ -20,7 +20,7 @@ LIBUSB_URL="https://github.com/libusb/libusb/releases/download/v1.0.26/libusb-1.
 LIBLZO_URL="https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz"
 LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.40.0.tar.gz"
 LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.9.tar.gz"
-LIBVDE2_URL="https://github.com/anjannath/mirror/releases/download/0.0.1/vde2-2.3.2.tar"
+LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
 LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.45.tar.bz2"
 LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.bz2"
@@ -367,6 +367,7 @@ function build_lib_vde2() {
     local source_dir
     source_dir=$(download_and_extract "${LIBVDE2_URL}")
     pushd "${source_dir}"
+    autoreconf --install
     ./configure --prefix="$1" --disable-python
     make install
     popd
