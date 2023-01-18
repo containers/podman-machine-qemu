@@ -12,7 +12,7 @@ export PKG_CONFIG_PATH="${LIBRARY_PATH}"/pkgconfig
 export CPPFLAGS=-I"${PREFIX}"/include
 export LDFLAGS=-L"${PREFIX}"/lib
 
-QEMU_SOURCE_URL="https://download.qemu.org/qemu-7.1.0.tar.xz"
+QEMU_SOURCE_URL="https://download.qemu.org/qemu-7.2.0.tar.xz"
 
 
 ## Install following build time dependencies from brew:
@@ -72,8 +72,8 @@ function build_qemu() {
     export PATH=${PREFIX}/bin:${PATH}
     export CPPFLAGS="${CPPFLAGS} ${macos_version_min_flags}"
     export CFLAGS="${macos_version_min_flags}"
-    ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
-        --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
+    ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-vde \
+        --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
         --disable-capstone --prefix="${PREFIX}" --target-list="${qemu_target}"
 
     make V=1 install
