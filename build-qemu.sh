@@ -48,7 +48,7 @@ function build_qemu() {
     export LIBTOOL=glibtool
     local source_dir
     source_dir=$(download_and_extract "${QEMU_SOURCE_URL}")
- 
+
     local qemu_target
     local macos_version_min_flags
     case "$(uname -m)" in
@@ -74,7 +74,7 @@ function build_qemu() {
     export CFLAGS="${macos_version_min_flags}"
     ./configure --disable-bsd-user --disable-guest-agent --disable-curses --disable-libssh --disable-gnutls --enable-slirp=system \
         --enable-vde --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
-        --prefix="${PREFIX}" --target-list="${qemu_target}"
+        --disable-capstone --prefix="${PREFIX}" --target-list="${qemu_target}"
 
     make V=1 install
 }
