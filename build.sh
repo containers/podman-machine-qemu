@@ -22,8 +22,8 @@ LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
 LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.10.tar.gz"
 LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
-LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.45.tar.bz2"
 LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.bz2"
+LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2"
 
 function download_and_extract() {
     local tarball ext_dir
