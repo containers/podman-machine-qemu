@@ -18,8 +18,8 @@ LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/1.6.39/lib
 LIBSLIRP_URL="https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.7.0/libslirp-v4.7.0.tar.gz"
 LIBUSB_URL="https://github.com/libusb/libusb/releases/download/v1.0.26/libusb-1.0.26.tar.bz2"
 LIBLZO_URL="https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz"
-LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.40.0.tar.gz"
 LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.9.tar.gz"
+LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
 LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
 LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.45.tar.bz2"
@@ -329,7 +329,7 @@ function build_lib_pixman() {
     local source_dir
     source_dir=$(download_and_extract "${LIBPIXMAN_URL}")
     pushd "${source_dir}"
-    ./configure --disable-dependency-tracking --disable-gtk --disable-silent-rules --prefix="$1"
+    ./configure --disable-dependency-tracking --disable-gtk --disable-silent-rules --disable-arm-a64-neon --prefix="$1"
     make install
     popd
 }
