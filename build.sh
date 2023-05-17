@@ -22,8 +22,8 @@ LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
 LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.10.tar.gz"
 LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
-LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.bz2"
 LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2"
+LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.2.tar.bz2"
 
 function download_and_extract() {
     local tarball ext_dir
@@ -204,6 +204,9 @@ function build_lib_gcrypt() {
     local source_dir
     source_dir=$(download_and_extract "${LIBGCRYPT_URL}")
     pushd "${source_dir}" || exit
+    # patch needed for building on macOS, ref: https://dev.gnupg.org/T6442
+    # patch comes from: https://dev.gnupg.org/rCfa21ddc158b5d7b5900856e5b131071302217a51
+    curl -L https://files.gnupg.net/file/data/vwujyhdvm7ankwyqd645/PHID-FILE-mwryt6zs63h44liholua/file | patch -p1
     ./configure --disable-dependency-tracking --disable-silent-rules --enable-static --prefix="$1" \
         --disable-asm --with-libgpg-error-prefix="$1"
     make -C random rndjent.o rndjent.lo
