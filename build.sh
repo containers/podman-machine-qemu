@@ -18,8 +18,8 @@ LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/1.6.39/lib
 LIBSLIRP_URL="https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.7.0/libslirp-v4.7.0.tar.gz"
 LIBUSB_URL="https://github.com/libusb/libusb/releases/download/v1.0.26/libusb-1.0.26.tar.bz2"
 LIBLZO_URL="https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz"
-LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.9.tar.gz"
 LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
+LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.10.tar.gz"
 LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
 LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.45.tar.bz2"
@@ -62,6 +62,8 @@ esac
 
 KERNEL_VERSION=$(uname -r)
 KERNEL_BUILD_FLAG="${CPU}-apple-darwin${KERNEL_VERSION%%.*}" # aarch64-apple-darwin21
+MACOS_MAJOR_VERSION=$(sw_vers | sed -n '2p' | awk '{print $2}' | cut -d. -f1)
+
 
 export CFLAGS="${macos_version_min_flags}"
 export CPPFLAGS="${macos_version_min_flags}"
@@ -348,10 +350,15 @@ function build_lib_snappy() {
     fi
 
     pushd "${source_dir}"
-    cmake . -DCMAKE_INSTALL_NAME_DIR="$1"/lib -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_BUILD_BENCHMARKS=OFF -DBUILD_SHARED_LIBS=ON \
+    CXXFLAGS="-Werror,-Wsign-compare" cmake . -DCMAKE_INSTALL_NAME_DIR="$1"/lib -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_BUILD_BENCHMARKS=OFF \
         -DCMAKE_INSTALL_PREFIX="$1" -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev
+        -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev -DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/"MacOSX${MACOS_MAJOR_VERSION}".sdk
     
+    make install
+    make clean
+    CXXFLAGS="-Werror,-Wsign-compare" cmake . -DCMAKE_INSTALL_NAME_DIR="$1"/lib -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_BUILD_BENCHMARKS=OFF \
+        -DCMAKE_INSTALL_PREFIX="$1" -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -Wno-dev -DBUILD_SHARED_LIBS=ON -DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/"MacOSX${MACOS_MAJOR_VERSION}".sdk
     make install
     popd
 }
