@@ -8,7 +8,7 @@ LIBPCRE2_URL="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.4
 LIBGLIB_URL="https://download.gnome.org/sources/glib/2.76/glib-2.76.2.tar.xz"
 #CA_CERTIFICATE_URL="https://curl.se/ca/cacert-2022-04-26.pem"
 LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz"
-LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.7.3.tar.gz"
+LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.9.tar.gz"
 #LIBGNUTLS_URL="https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.4.tar.xz"
 LIBIDN2_URL="https://ftpmirror.gnu.org/libidn/libidn2-2.3.2.tar.gz"
 LIBUNISTRING_URL="https://ftpmirror.gnu.org/libunistring/libunistring-1.0.tar.gz"
@@ -217,7 +217,7 @@ function build_lib_nettle() {
     local source_dir
     source_dir=$(download_and_extract "${LIBNETTLE_URL}")
     pushd "${source_dir}" || exit
-    ./configure --build="${KERNEL_BUILD_FLAG}" --disable-dependency-tracking --prefix="$1" --enable-shared
+    ./configure --disable-debug --disable-dependency-tracking --prefix="$1" --libdir="$1/lib" --enable-shared
     make -j "${NCORES}"
     make install
     # some checks are failing
