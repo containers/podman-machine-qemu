@@ -2,10 +2,10 @@
 
 set -exu
 
-LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.21.tar.gz"
-LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz"
-LIBPCRE_URL="https://www.mirrorservice.org/sites/ftp.exim.org/pub/pcre/pcre-8.45.tar.bz2"
-LIBGLIB_URL="https://download.gnome.org/sources/glib/2.72/glib-2.72.2.tar.xz"
+LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.21.1.tar.gz"
+LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v3.4.4/libffi-3.4.4.tar.gz"
+LIBPCRE2_URL="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.bz2"
+LIBGLIB_URL="https://download.gnome.org/sources/glib/2.76/glib-2.76.2.tar.xz"
 #CA_CERTIFICATE_URL="https://curl.se/ca/cacert-2022-04-26.pem"
 LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz"
 LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.7.3.tar.gz"
@@ -91,22 +91,19 @@ function build_lib_libffi() {
     source_dir=$(download_and_extract "${LIBFFI_URL}")
     pushd "${source_dir}" || exit
     ./configure --disable-debug --disable-dependency-tracking --prefix="$1" --libdir="$1/lib"
-    #make install
+    make install
     popd || exit
 }
 
-function build_lib_pcre() {
-    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pcre.rb
+function build_lib_pcre2() {
+    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pcre2.rb
     local source_dir
-    source_dir=$(download_and_extract "${LIBPCRE_URL}")
+    source_dir=$(download_and_extract "${LIBPCRE2_URL}")
     pushd "${source_dir}" || exit
-    # TODO: apply patch as in homebrew
-    ./configure --disable-dependency-tracking --enable-utf8 \
-        --enable-pcre8 --enable-pcre16 --enable-pcre32 --enable-unicode-properties \
-        --enable-pcregrep-libz --enable-pcregrep-libbz2 --prefix="$1"
-        
+    ./configure --disable-dependency-tracking --prefix="$1" --enable-pcre2-16 \
+        --enable-pcre2-32 --enable-pcre2grep-libz --enable-pcre2grep-libbz2 --enable-jit \
+        --enable-pcre2test-libedit
     make -j "${NCORES}"
-    make test -j "${NCORES}"
     make install
     popd || exit
 }
@@ -116,15 +113,12 @@ function build_lib_glib() {
     local source_dir
     source_dir=$(download_and_extract "${LIBGLIB_URL}")
     pushd "${source_dir}" || exit
-        mkdir build
-        pushd build || exit
-            meson --prefix="$1" --libdir="$1"/lib --buildtype=release \
-                --wrap-mode=nofallback --default-library=both --localstatedir=/var \
-                -Diconv=auto -Dgio_module_dir="$1"/lib/gio/modules -Dbsymbolic_functions=false -Ddtrace=false ..
-            ninja -v
-            ninja install -v
-            # need to rewrite some python #! inside /tmp/anjan/libs/bin/(file *)
-        popd || true
+    mkdir build
+    meson setup build --prefix="$1" --libdir="$1"/lib --buildtype=release \
+        --wrap-mode=nofallback --default-library=both --localstatedir=/var \
+        -Dgio_module_dir="$1"/lib/gio/modules -Dbsymbolic_functions=false -Ddtrace=false -Druntime_dir=/var/run
+    meson compile -C build --verbose
+    meson install -C build
     popd || exit
 }
 

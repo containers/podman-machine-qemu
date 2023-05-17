@@ -23,7 +23,7 @@ source build.sh
 function build_qemu_deps() {
     build_lib_gettext "$1"
     build_lib_libffi "$1"
-    build_lib_pcre "$1"
+    build_lib_pcre2 "$1"
     # glib should always follow the above dependencies (order matters)
     build_lib_glib "$1"
 
