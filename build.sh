@@ -206,7 +206,7 @@ function build_lib_gcrypt() {
     pushd "${source_dir}" || exit
     # patch needed for building on macOS, ref: https://dev.gnupg.org/T6442
     # patch comes from: https://dev.gnupg.org/rCfa21ddc158b5d7b5900856e5b131071302217a51
-    curl -L https://files.gnupg.net/file/data/vwujyhdvm7ankwyqd645/PHID-FILE-mwryt6zs63h44liholua/file | patch -p1
+    curl -L "https://dev.gnupg.org/rCfa21ddc158b5d7b5900856e5b131071302217a51?diff=1" | patch -p1
     ./configure --disable-dependency-tracking --disable-silent-rules --enable-static --prefix="$1" \
         --disable-asm --with-libgpg-error-prefix="$1"
     make -C random rndjent.o rndjent.lo
