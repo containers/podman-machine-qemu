@@ -2,7 +2,7 @@
 
 set -exu
 
-PREFIX="/tmp/bar foo"
+PREFIX="/tmp/bar\ foo"
 
 ! [ -d "${PREFIX}" ] && mkdir -p "${PREFIX}"
 
