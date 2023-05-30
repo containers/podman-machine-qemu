@@ -10,9 +10,9 @@ LIBGLIB_URL="https://download.gnome.org/sources/glib/2.76/glib-2.76.2.tar.xz"
 LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz"
 LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.9.tar.gz"
 #LIBGNUTLS_URL="https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.4.tar.xz"
-LIBIDN2_URL="https://ftpmirror.gnu.org/libidn/libidn2-2.3.2.tar.gz"
-LIBUNISTRING_URL="https://ftpmirror.gnu.org/libunistring/libunistring-1.0.tar.gz"
-LIBZSTD_URL="http://fresh-center.net/linux/misc/zstd-1.5.2.tar.gz"
+# LIBIDN2_URL="https://ftpmirror.gnu.org/libidn/libidn2-2.3.2.tar.gz"
+# LIBUNISTRING_URL="https://ftpmirror.gnu.org/libunistring/libunistring-1.0.tar.gz"
+# LIBZSTD_URL="http://fresh-center.net/linux/misc/zstd-1.5.2.tar.gz"
 LIBJPEG_URL="https://fossies.org/linux/misc/jpegsrc.v9e.tar.gz"
 LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/1.6.39/libpng-1.6.39.tar.xz"
 LIBSLIRP_URL="https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.7.0/libslirp-v4.7.0.tar.gz"
@@ -145,41 +145,41 @@ function build_lib_gmp() {
     popd || exit
 }
 
-function build_lib_unistring() {
-    # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/libunistring.rb
-    local source_dir
-    source_dir=$(download_and_extract "${LIBUNISTRING_URL}")
-    pushd "${source_dir}" || exit
-    ./configure --disable-dependency-tracking --disable-silent-rules --prefix="$1"
-    make -j "${NCORES}"
-    make check -j "${NCORES}"
-    make install
-    popd || exit
-}
+# function build_lib_unistring() {
+#     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/libunistring.rb
+#     local source_dir
+#     source_dir=$(download_and_extract "${LIBUNISTRING_URL}")
+#     pushd "${source_dir}" || exit
+#     ./configure --disable-dependency-tracking --disable-silent-rules --prefix="$1"
+#     make -j "${NCORES}"
+#     make check -j "${NCORES}"
+#     make install
+#     popd || exit
+# }
 
-function build_lib_libidn2() {
-    # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/libidn2.rb
-    local source_dir
-    source_dir=$(download_and_extract "${LIBIDN2_URL}")
-    pushd "${source_dir}" || exit
-    ./configure --disable-dependency-tracking --disable-silent-rules --prefix="$1" # --with-libintl-prefix="$1"
-    make install
-    popd || exit
-}
+# function build_lib_libidn2() {
+#     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/libidn2.rb
+#     local source_dir
+#     source_dir=$(download_and_extract "${LIBIDN2_URL}")
+#     pushd "${source_dir}" || exit
+#     ./configure --disable-dependency-tracking --disable-silent-rules --prefix="$1" # --with-libintl-prefix="$1"
+#     make install
+#     popd || exit
+# }
 
-function build_lib_zstd() {
-    # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/zstd.rb
-    local source_dir
-    source_dir=$(download_and_extract "${LIBZSTD_URL}")
-    pushd "${source_dir}" || exit
-    cmake -S build/cmake -B builddir -DZSTD_PROGRAMS_LINK_SHARED=ON -DZSTD_BUILD_CONTRIB=ON \
-        -DCMAKE_INSTALL_RPATH="$1" -DZSTD_LEGACY_SUPPORT=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX="$1" \
-        -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev -DBUILD_TESTING=OFF
+# function build_lib_zstd() {
+#     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/zstd.rb
+#     local source_dir
+#     source_dir=$(download_and_extract "${LIBZSTD_URL}")
+#     pushd "${source_dir}" || exit
+#     cmake -S build/cmake -B builddir -DZSTD_PROGRAMS_LINK_SHARED=ON -DZSTD_BUILD_CONTRIB=ON \
+#         -DCMAKE_INSTALL_RPATH="$1" -DZSTD_LEGACY_SUPPORT=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX="$1" \
+#         -DCMAKE_INSTALL_LIBDIR="$1"/lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON -Wno-dev -DBUILD_TESTING=OFF
     
-    cmake --build builddir
-    cmake --install builddir
-    popd || exit
-}
+#     cmake --build builddir
+#     cmake --install builddir
+#     popd || exit
+# }
 
 # function build_lib_libtasn1() {
 
