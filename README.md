@@ -8,11 +8,10 @@ $ brew install ronn gengetopt automake autoconf libtool cmake meson ninja
 - run the `build-qemu.sh` script
 ```
 $ chmod +x build-qemu.sh
-```
-```
+
 # create the prefix/installation directory
 $ mkdir -p /opt/podman/qemu
-$ chwon -R <user:group> /opt/podman
+$ chown -R <user:group> /opt/podman
 
 $ PREFIX=/opt/podman/qemu ./build-qemu.sh
 ```
