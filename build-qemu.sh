@@ -12,7 +12,7 @@ export PKG_CONFIG_PATH="${LIBRARY_PATH}"/pkgconfig
 export CPPFLAGS=-I"${PREFIX}"/include
 export LDFLAGS=-L"${PREFIX}"/lib
 
-QEMU_SOURCE_URL="https://download.qemu.org/qemu-8.0.0.tar.xz"
+QEMU_SOURCE_URL="https://download.qemu.org/qemu-8.2.1.tar.xz"
 
 
 ## Install following build time dependencies from brew:
