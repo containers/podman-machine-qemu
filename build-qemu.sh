@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exu
+set -euo pipefail
 
 PREFIX=${PREFIX:-/opt/podman/qemu}
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exu
+set -euo pipefail
 
 LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.22.4.tar.gz"
 LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v3.4.4/libffi-3.4.4.tar.gz"
