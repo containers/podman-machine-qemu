@@ -2,28 +2,28 @@
 
 set -exu
 
-LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.21.1.tar.gz"
+LIBGETTEXT_URL="https://ftpmirror.gnu.org/gettext/gettext-0.22.4.tar.gz"
 LIBFFI_URL="https://github.com/libffi/libffi/releases/download/v3.4.4/libffi-3.4.4.tar.gz"
 LIBPCRE2_URL="https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.bz2"
-LIBGLIB_URL="https://download.gnome.org/sources/glib/2.76/glib-2.76.2.tar.xz"
+LIBGLIB_URL="https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz"
 #CA_CERTIFICATE_URL="https://curl.se/ca/cacert-2022-04-26.pem"
-LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz"
-LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.9.tar.gz"
+LIBGMP_URL="https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz"
+LIBNETTLE_URL="https://ftpmirror.gnu.org/nettle/nettle-3.9.1.tar.gz"
 #LIBGNUTLS_URL="https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.4.tar.xz"
 # LIBIDN2_URL="https://ftpmirror.gnu.org/libidn/libidn2-2.3.2.tar.gz"
 # LIBUNISTRING_URL="https://ftpmirror.gnu.org/libunistring/libunistring-1.0.tar.gz"
 # LIBZSTD_URL="http://fresh-center.net/linux/misc/zstd-1.5.2.tar.gz"
-LIBJPEG_URL="https://fossies.org/linux/misc/jpegsrc.v9e.tar.gz"
-LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/1.6.39/libpng-1.6.39.tar.xz"
+LIBJPEG_URL="https://www.ijg.org/files/jpegsrc.v9f.tar.gz"
+LIBPNG_URL="https://downloads.sourceforge.net/project/libpng/libpng16/1.6.40/libpng-1.6.40.tar.xz"
 LIBSLIRP_URL="https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.7.0/libslirp-v4.7.0.tar.gz"
 LIBUSB_URL="https://github.com/libusb/libusb/releases/download/v1.0.26/libusb-1.0.26.tar.bz2"
 LIBLZO_URL="https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz"
 LIBPIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
-LIBSNAPPY_URL="https://github.com/google/snappy/archive/1.1.10.tar.gz"
+LIBSNAPPY_URL="https://github.com/google/snappy/archive/refs/tags/1.1.10.tar.gz"
 LIBVDE2_URL="https://github.com/virtualsquare/vde-2/archive/refs/tags/v2.3.3.tar.gz"
 #LIBOPENSSL11_URL="http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1o.tar.gz"
 LIBGPGERROR_URL="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2"
-LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.2.tar.bz2"
+LIBGCRYPT_URL="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.3.tar.bz2"
 
 function download_and_extract() {
     local tarball ext_dir
@@ -88,7 +88,7 @@ function build_lib_gettext() {
 }
 
 function build_lib_libffi() {
-    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libffi.rb
+    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/lib/libffi.rb
     local source_dir
     source_dir=$(download_and_extract "${LIBFFI_URL}")
     pushd "${source_dir}" || exit
@@ -138,6 +138,10 @@ function build_lib_gmp() {
     local source_dir
     source_dir=$(download_and_extract "${LIBGMP_URL}")
     pushd "${source_dir}" || exit
+    # Regenerate configure to avoid flat namespace linking
+    # Reported by email: https://gmplib.org/list-archives/gmp-bugs/2023-July/thread.html
+    # Remove 'autoreconf' command below in next version
+    autoreconf -i -s
     ./configure --prefix="$1" --libdir="$1"/lib --enable-cxx --with-pic --build="${KERNEL_BUILD_FLAG}"
     make -j "${NCORES}"
     make check -j "${NCORES}"
@@ -204,9 +208,6 @@ function build_lib_gcrypt() {
     local source_dir
     source_dir=$(download_and_extract "${LIBGCRYPT_URL}")
     pushd "${source_dir}" || exit
-    # patch needed for building on macOS, ref: https://dev.gnupg.org/T6442
-    # patch comes from: https://dev.gnupg.org/rCfa21ddc158b5d7b5900856e5b131071302217a51
-    curl -L "https://dev.gnupg.org/rCfa21ddc158b5d7b5900856e5b131071302217a51?diff=1" | patch -p1
     ./configure --disable-dependency-tracking --disable-silent-rules --enable-static --prefix="$1" \
         --disable-asm --with-libgpg-error-prefix="$1"
     make -C random rndjent.o rndjent.lo
