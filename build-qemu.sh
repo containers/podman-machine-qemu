@@ -43,7 +43,7 @@ function build_qemu_deps() {
 
 function build_qemu() {
     # https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/qemu.rb
-    build_qemu_deps "${PREFIX}" || exit
+    build_qemu_deps "${PREFIX}" || exit 1
 
     export LIBTOOL=glibtool
     local source_dir
@@ -76,11 +76,9 @@ function build_qemu() {
         --enable-virtfs --disable-sdl --enable-cocoa --disable-curses --disable-gtk --disable-zstd --enable-gcrypt \
         --disable-capstone --prefix="${PREFIX}" --target-list="${qemu_target}"
 
-    make V=1 install
+    make V=1 install || exit 1
+    popd
 }
 
-if build_qemu; then
-    popd
-    tar -C "${PREFIX}" -cJf qemu-macos-"${CPU}".tar.xz .
-fi
+build_qemu && tar -C "${PREFIX}" -cJf qemu-macos-"${CPU}".tar.xz .
 
