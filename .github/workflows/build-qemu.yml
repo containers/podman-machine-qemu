@@ -14,15 +14,19 @@ jobs:
         - macOS-13
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: install build dependencies for Qemu
         run: brew install automake autoconf libtool cmake meson ninja wget pkg-config
       - name: mkdir prefix /opt/podman/qemu
         run: sudo mkdir -p /opt/podman/qemu && sudo chown -R $USER:admin /opt/podman
+      - name: install setuptools pythong module needed by ninja
+        run: python3 -m pip install -U setuptools
+      - name: check distutils can be imported
+        run: python3 -c 'import distutils; help(distutils)'
       - name: Build Qemu
         run: ./build-qemu.sh
       - name: Upload qemu artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: qemu-test-build
           path: "./qemu-macos-amd64.tar.xz"
